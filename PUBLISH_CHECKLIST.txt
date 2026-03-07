@@ -1,0 +1,12 @@
+FareRadar First Publish Checklist
+
+1. Push this repo to GitHub.
+2. Create Supabase Postgres and copy the connection string.
+3. Create Upstash Redis and copy the TLS redis URL.
+4. Create a Render Blueprint from `render.yaml`.
+5. Fill in backend environment variables in Render.
+6. Run `schema.sql` against Supabase.
+7. Create a Vercel project from `frontend/`.
+8. Add `NEXT_PUBLIC_API_URL` in Vercel.
+9. Set `CORS_ALLOWED_ORIGINS` in Render to your Vercel URL.
+10. Visit `/health`, then the homepage, then `/docs`.

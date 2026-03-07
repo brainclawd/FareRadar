@@ -1,0 +1,97 @@
+services:
+  - type: web
+    name: fareradar-api
+    env: python
+    rootDir: backend
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: CELERY_BROKER_URL
+        sync: false
+      - key: CELERY_RESULT_BACKEND
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: FLIGHT_PROVIDER
+        value: mock
+      - key: JWT_SECRET
+        sync: false
+      - key: NOTIFICATIONS_FROM_EMAIL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: PROVIDER_FALLBACK_ORDER
+        value: '["amadeus","kiwi","mock"]'
+
+  - type: worker
+    name: fareradar-worker
+    env: python
+    rootDir: backend
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A app.celery_app.celery_app worker -Q default,scanner,scheduler,validator,alerts --loglevel=info
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: CELERY_BROKER_URL
+        sync: false
+      - key: CELERY_RESULT_BACKEND
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: FLIGHT_PROVIDER
+        value: mock
+      - key: JWT_SECRET
+        sync: false
+      - key: NOTIFICATIONS_FROM_EMAIL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: PROVIDER_FALLBACK_ORDER
+        value: '["amadeus","kiwi","mock"]'
+
+  - type: worker
+    name: fareradar-beat
+    env: python
+    rootDir: backend
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A app.celery_app.celery_app beat --loglevel=info
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: CELERY_BROKER_URL
+        sync: false
+      - key: CELERY_RESULT_BACKEND
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: FLIGHT_PROVIDER
+        value: mock
+      - key: JWT_SECRET
+        sync: false
+      - key: NOTIFICATIONS_FROM_EMAIL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: PROVIDER_FALLBACK_ORDER
+        value: '["amadeus","kiwi","mock"]'
